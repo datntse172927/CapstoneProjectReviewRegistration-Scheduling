@@ -1,3 +1,5 @@
 <Solution>
+  <Project Path="../../CapstoneProjectReviewRegistrationTool/CapstoneReview.API/CapstoneReview.API.csproj" />
+  <Project Path="../../CapstoneProjectReviewRegistrationTool/CapstoneReview.Service/CapstoneReview.Service.csproj" />
   <Project Path="CapstoneReview.Repository/CapstoneReview.Repository.csproj" />
 </Solution>
