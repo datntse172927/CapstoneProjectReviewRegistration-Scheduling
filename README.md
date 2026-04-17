@@ -1,10 +1,10 @@
-# Capstone Project Review Registration Tool v2.7
+# Capstone Project Review Registration Tool 
 
 Hệ thống quản lý đăng ký lịch bảo vệ Đồ án Tốt nghiệp (Capstone Project) xây dựng bằng kiến trúc chuẩn 3-Layer (API, Service, Repository) trên nền tảng .NET 10 Web API và Entity Framework Core SQL Server. 
 
 Dự án có hỗ trợ triển khai bằng Docker Compose và đính kèm bộ Test Automation khép kín qua Postman với dữ liệu chuẩn chỉ.
 
-## 🚀 Tính Năng (Features) & Flow Dự Án
+## Tính Năng (Features) & Flow Dự Án
 - Lọc danh sách Nền tảng (**Master Data**): Lấy danh sách Sinh viên, Tham chiếu Giảng viên (`Lecturer`) và Nhóm Đề tài (`Team`).
 - Khởi tạo Slot bảo vệ: Moderator có quyền setup các Slot trống theo lịch trình.
 - Đăng ký Slot (Sinh viên): Nhóm sinh viên (Do Leader đại diện) đăng ký các Slot tự do.
@@ -13,7 +13,7 @@ Dự án có hỗ trợ triển khai bằng Docker Compose và đính kèm bộ 
 - Auto Xếp Lịch (**Auto Schedule**): Cỗ máy tính toán Greedy tự động ghép Nối Giảng Viên, Nhóm và Slot sao cho thoả mãn chống Trùng Lặp GVHD và đạt hạn mức tối thiểu.
 - Tự động Reset DB (**Test Automation**): Phục vụ việc Testing nhanh gọn 100% tỷ lệ Passed.
 
-## 🛠 Danh sách HTTP API Endpoints
+## Danh sách HTTP API Endpoints
 
 Hệ thống cung cấp mảng REST API hoàn chỉnh phục vụ React Frontend:
 
@@ -33,9 +33,62 @@ Hệ thống cung cấp mảng REST API hoàn chỉnh phục vụ React Frontend
 - `POST /api/Schedule/auto-schedule`: Chạy thuật toán tự động điền lịch `Greedy`. Cần body `reviewRound`.
 - `GET /api/Schedule/{reviewRound}`: Trả về kết xuất toàn bộ Lịch bảo vệ, Mapping sẵn Tên Nhóm, GV, Room.
 
----
+**4. Hủy booking team & Cập nhật booking team**
+- `DELETE` /api/booking/team
+  Body: JSON
+  {
+  "leaderRollNumber": "SE10001",
+  "slotIds": [1]
+  }
 
-## 💻 Hướng Dẫn Kéo Code & Chạy Server (Docker)
+  Resonpense:
+  {
+  "message": "Team booking cancelled successfully."
+  }
+
+- `PUT` /api/booking/team
+  {
+  "leaderRollNumber": "SE10001",
+  "oldSlotIds": [1],
+  "newSlotIds": [2]
+  }
+
+  Resonpense:
+  {
+  "message": "Team booking updated successfully."
+  }
+
+**5. Hủy booking lecture & Cập nhật booking lecture**
+  - `DELETE` /api/booking/lecturer
+  Body: JSON
+  {
+  "lecturerId": 1,
+  "slotIds": [1]
+  }
+
+  Resonpense:
+  {
+  "message": "Lecturer booking cancelled successfully."
+  }
+
+- `PUT` /api/booking/lecturer
+  {
+  "lecturerId": 1,
+  "oldSlotIds": [1],
+  "newSlotIds": [2]
+  }
+
+  Resonpense:
+  {
+  "message": "Lecturer booking updated successfully"
+  }
+
+**6. CRUD Topics**
+
+  
+
+
+## Hướng Dẫn Kéo Code & Chạy Server (Docker)
 
 **1. Clone kho lưu trữ từ GitHub về máy:**
 Mở Terminal/Command Prompt và chạy lệnh sau:
