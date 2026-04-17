@@ -12,6 +12,8 @@ public class UnitOfWork : IUnitOfWork
     public ILecturerRepository Lecturers { get; private set; }
     public ITeamRepository Teams { get; private set; }
     public IUserRepository Users { get; private set; }
+    public ITopicRepository Topics { get; private set; }
+
 
     public UnitOfWork(ApplicationDbContext context)
     {
@@ -20,6 +22,7 @@ public class UnitOfWork : IUnitOfWork
         Lecturers = new LecturerRepository(_context);
         Teams = new TeamRepository(_context);
         Users = new UserRepository(_context);
+        Topics = new TopicRepository(_context);
     }
 
     public async Task<int> SaveChangesAsync()

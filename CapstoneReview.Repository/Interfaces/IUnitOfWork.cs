@@ -9,5 +9,6 @@ public interface IUnitOfWork : IDisposable
     ILecturerRepository Lecturers { get; }
     ITeamRepository Teams { get; }
     IUserRepository Users { get; }
+    ITopicRepository Topics { get; }
     Task<int> SaveChangesAsync();
 }
