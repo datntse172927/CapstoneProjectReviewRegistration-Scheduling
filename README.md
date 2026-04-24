@@ -1,8 +1,8 @@
 # Capstone Project Review Registration Tool 
 
-Hệ thống quản lý đăng ký lịch bảo vệ Đồ án Tốt nghiệp (Capstone Project) xây dựng bằng kiến trúc chuẩn 3-Layer (API, Service, Repository) trên nền tảng .NET 10 Web API và Entity Framework Core SQL Server. 
+Hệ thống quản lý đăng ký lịch bảo vệ Đồ án Tốt nghiệp (Capstone Project) xây dựng bằng kiến trúc chuẩn 3-Layer (API, Service, Repository) trên nền tảng .NET Web API và Entity Framework Core SQL Server. 
 
-Dự án có hỗ trợ triển khai bằng Docker Compose và đính kèm bộ Test Automation khép kín qua Postman với dữ liệu chuẩn chỉ.
+Dự án có hỗ trợ triển khai bằng Docker Compose.
 
 ## Tính Năng (Features) & Flow Dự Án
 - Lọc danh sách Nền tảng (**Master Data**): Lấy danh sách Sinh viên, Tham chiếu Giảng viên (`Lecturer`) và Nhóm Đề tài (`Team`).
