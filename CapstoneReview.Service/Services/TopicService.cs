@@ -27,7 +27,9 @@ public class TopicService : ITopicService
             Title = t.Title,
             Description = t.Description,
             LecturerId = t.LecturerId,
-            LecturerName = t.Lecturer?.FullName ?? ""
+            LecturerName = t.Lecturer?.FullName ?? "",
+            TeamId = t.Team?.Id,
+            TeamName = t.Team?.TeamName ?? ""
         }).ToList();
     }
 
@@ -42,7 +44,9 @@ public class TopicService : ITopicService
             Title = topic.Title,
             Description = topic.Description,
             LecturerId = topic.LecturerId,
-            LecturerName = topic.Lecturer?.FullName ?? ""
+            LecturerName = topic.Lecturer?.FullName ?? "",
+            TeamId = topic.Team?.Id,
+            TeamName = topic.Team?.TeamName ?? ""
         };
     }
 
@@ -56,7 +60,7 @@ public class TopicService : ITopicService
         {
             Title = request.Title,
             Description = request.Description,
-            LecturerId = request.LecturerId
+            LecturerId = request.LecturerId,
         };
 
         _unitOfWork.Topics.Add(topic);
@@ -68,7 +72,9 @@ public class TopicService : ITopicService
             Title = topic.Title,
             Description = topic.Description,
             LecturerId = topic.LecturerId,
-            LecturerName = lecturer.FullName
+            LecturerName = lecturer.FullName,
+            TeamId = topic.Team?.Id,
+            TeamName = topic.Team?.TeamName ?? ""
         };
     }
 
@@ -94,7 +100,9 @@ public class TopicService : ITopicService
             Title = topic.Title,
             Description = topic.Description,
             LecturerId = topic.LecturerId,
-            LecturerName = lecturer.FullName
+            LecturerName = lecturer.FullName,
+            TeamId = topic.Team?.Id,
+            TeamName = topic.Team?.TeamName ?? ""
         };
     }
 

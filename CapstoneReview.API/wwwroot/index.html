@@ -858,6 +858,30 @@
                             <div class="alert" id="validateAlert"></div>
                             <button class="btn btn-success" onclick="validateAssignment()">✓ Kiểm tra</button>
                         </div>
+
+                        <div class="card">
+                            <div class="card-title">Xuất lịch giảng viên ra PDF — GET /api/export/lecturer-schedule-pdf</div>
+                            <div class="grid2">
+                                <div class="form-group">
+                                    <label>Lecturer ID</label>
+                                    <input type="number" id="pdfLecturerId" placeholder="VD: 1" value="1">
+                                </div>
+                                <div class="form-group">
+                                    <label>Review Round</label>
+                                    <select id="pdfReviewRound">
+                                        <option value="1">Round 1</option>
+                                        <option value="2">Round 2</option>
+                                        <option value="3">Round 3</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="alert" id="pdfExportAlert"></div>
+                            <div class="row">
+                                <button class="btn btn-primary" onclick="exportLecturerPdf()">Xuất PDF</button>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -1199,18 +1223,62 @@ async function fetchSlots() {
 }
 
 // BOOKING
-async function bookTeam() {
-  const data = await apiFetch('POST', '/booking/team', { teamId: parseInt(document.getElementById('bkTeamId').value), slotId: parseInt(document.getElementById('bkTeamSlotId').value) }, 'bkTeamAlert');
-  if (data) showAlert('bkTeamAlert', data.message || 'Đặt lịch thành công!', 'success');
-}
-async function cancelTeamBooking() {
-  const data = await apiFetch('DELETE', '/booking/team', { teamId: parseInt(document.getElementById('bkTeamUpId').value), slotId: parseInt(document.getElementById('bkTeamOldSlot').value) }, 'bkTeamUpAlert');
-  if (data) showAlert('bkTeamUpAlert', data.message || 'Hủy thành công!', 'success');
-}
-async function updateTeamBooking() {
-  const data = await apiFetch('PUT', '/booking/team', { teamId: parseInt(document.getElementById('bkTeamUpId').value), oldSlotId: parseInt(document.getElementById('bkTeamOldSlot').value), newSlotId: parseInt(document.getElementById('bkTeamNewSlot').value) }, 'bkTeamUpAlert');
-  if (data) showAlert('bkTeamUpAlert', data.message || 'Cập nhật thành công!', 'success');
-}
+        async function bookTeam() {
+            const teamId = parseInt(document.getElementById('bkTeamId').value);
+            const slotId = parseInt(document.getElementById('bkTeamSlotId').value);
+
+            // Gọi API lấy danh sách team để tìm leaderRollNumber
+            const teams = await apiFetch('GET', '/team', null, null);
+            const team = teams.find(t => t.id === teamId);
+
+            if (!team) {
+                showAlert('bkTeamAlert', 'Team không tồn tại', 'error');
+                return;
+            }
+
+            const body = {
+                leaderRollNumber: team.leaderRollNumber,
+                slotIds: [slotId]
+            };
+
+            const data = await apiFetch('POST', '/booking/team', body, 'bkTeamAlert');
+
+            if (data) showAlert('bkTeamAlert', data.message || 'Đặt lịch thành công!', 'success');
+        }
+        async function cancelTeamBooking() {
+            const teamId = parseInt(document.getElementById('bkTeamUpId').value);
+            const slotId = parseInt(document.getElementById('bkTeamOldSlot').value);
+
+            const teams = await apiFetch('GET', '/team', null, null);
+            const team = teams.find(t => t.id === teamId);
+
+            const body = {
+                leaderRollNumber: team.leaderRollNumber,
+                slotIds: [slotId]
+            };
+
+            const data = await apiFetch('DELETE', '/booking/team', body, 'bkTeamUpAlert');
+
+            if (data) showAlert('bkTeamUpAlert', data.message || 'Hủy thành công!', 'success');
+        }
+        async function updateTeamBooking() {
+            const teamId = parseInt(document.getElementById('bkTeamUpId').value);
+            const oldSlot = parseInt(document.getElementById('bkTeamOldSlot').value);
+            const newSlot = parseInt(document.getElementById('bkTeamNewSlot').value);
+
+            const teams = await apiFetch('GET', '/team', null, null);
+            const team = teams.find(t => t.id === teamId);
+
+            const body = {
+                leaderRollNumber: team.leaderRollNumber,
+                oldSlotIds: [oldSlot],
+                newSlotIds: [newSlot]
+            };
+
+            const data = await apiFetch('PUT', '/booking/team', body, 'bkTeamUpAlert');
+
+            if (data) showAlert('bkTeamUpAlert', data.message || 'Cập nhật thành công!', 'success');
+        }
 async function bookLecturer() {
   const data = await apiFetch('POST', '/booking/lecturer', { lecturerId: parseInt(document.getElementById('bkLecId').value), slotId: parseInt(document.getElementById('bkLecSlotId').value) }, 'bkLecAlert');
   if (data) showAlert('bkLecAlert', data.message || 'Đặt lịch GV thành công!', 'success');
@@ -1279,6 +1347,47 @@ async function configLecturer() {
   const body = { maxReviewsPerWeek: parseInt(document.getElementById('modMaxReviews').value), unavailableDays: document.getElementById('modUnavailable').value, note: document.getElementById('modNote').value };
   const data = await apiFetch('PUT', `/moderator/lecturer-config/${id}`, body, 'modAlert');
   if (data) showAlert('modAlert', data.message || 'Đã lưu cấu hình!', 'success');
-}</script>
+        }
+
+        async function exportLecturerPdf() {
+            const lecturerId = parseInt(document.getElementById('pdfLecturerId').value);
+            const reviewRound = parseInt(document.getElementById('pdfReviewRound').value);
+
+            if (!lecturerId || !reviewRound) {
+                showAlert('pdfExportAlert', 'Vui lòng nhập đầy đủ Lecturer ID và Review Round.', 'error');
+                return;
+            }
+
+            try {
+                const headers = {};
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const url = `${BASE}/export/lecturer-schedule-pdf?lecturerId=${lecturerId}&reviewRound=${reviewRound}`;
+                const res = await fetch(url, { method: 'GET', headers });
+
+                if (!res.ok) {
+                    let err = {};
+                    try { err = await res.json(); } catch { }
+                    throw new Error(err.error || err.message || `HTTP ${res.status}`);
+                }
+
+                const blob = await res.blob();
+                const downloadUrl = window.URL.createObjectURL(blob);
+
+                const a = document.createElement('a');
+                a.href = downloadUrl;
+                a.download = `lecturer_${lecturerId}_round_${reviewRound}_schedule.pdf`;
+                document.body.appendChild(a);
+                a.click();
+                a.remove();
+
+                window.URL.revokeObjectURL(downloadUrl);
+
+                showAlert('pdfExportAlert', 'Xuất file PDF thành công!', 'success');
+            } catch (e) {
+                showAlert('pdfExportAlert', e.message, 'error');
+            }
+        }
+    </script>
 </body>
 </html>

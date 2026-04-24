@@ -6,6 +6,7 @@ namespace CapstoneReview.Repository.Interfaces;
 
 public interface ISlotRepository
 {
+    Task<List<Slot>> GetSlotsByReviewRoundAsync(int reviewRound);
     Task<List<Slot>> GetSlotsByRoundWithDetailsAsync(int reviewRound);
     Task<Slot?> GetSlotByIdWithDetailsAsync(int slotId);
     void AddSlotLecturer(SlotLecturer slotLecturer);

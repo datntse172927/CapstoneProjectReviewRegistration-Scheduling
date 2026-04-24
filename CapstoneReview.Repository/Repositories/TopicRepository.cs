@@ -17,14 +17,14 @@ public class TopicRepository : ITopicRepository
     public async Task<List<Topic>> GetAllAsync()
     {
         return await _context.Topics
-            .Include(t => t.Lecturer)
+            .Include(t => t.Lecturer).Include(t => t.Team)
             .ToListAsync();
     }
 
     public async Task<Topic?> GetByIdAsync(int id)
     {
         return await _context.Topics
-            .Include(t => t.Lecturer)
+            .Include(t => t.Lecturer).Include(t => t.Team)
             .FirstOrDefaultAsync(t => t.Id == id);
     }
 

@@ -102,6 +102,7 @@ builder.Services.AddScoped<IBookingService, BookingService>();
 builder.Services.AddScoped<IMasterDataService, MasterDataService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
 builder.Services.AddScoped<ITopicService, TopicService>();
+builder.Services.AddScoped<ILecturerSchedulePdfService, LecturerSchedulePdfService>();
 
 var app = builder.Build();
 

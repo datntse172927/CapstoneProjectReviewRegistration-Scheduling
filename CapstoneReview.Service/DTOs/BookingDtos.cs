@@ -3,6 +3,7 @@ namespace CapstoneReview.Service.DTOs;
 public class AvailableSlotResponse
 {
     public int SlotId { get; set; }
+    public int ReviewRound { get; set; }
     public System.DateTime StartTime { get; set; }
     public System.DateTime EndTime { get; set; }
     public string Room { get; set; } = string.Empty;

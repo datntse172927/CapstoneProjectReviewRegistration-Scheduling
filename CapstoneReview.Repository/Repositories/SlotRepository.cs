@@ -17,6 +17,16 @@ public class SlotRepository : ISlotRepository
         _context = context;
     }
 
+    public async Task<List<Slot>> GetSlotsByReviewRoundAsync(int reviewRound)
+    {
+        return await _context.Slots
+            .Include(s => s.SlotLecturers)
+            .Include(s => s.SlotTopics)
+                .ThenInclude(st => st.Topic)
+                    .ThenInclude(t => t.Team)
+            .Where(s => s.ReviewRound == reviewRound)
+            .ToListAsync();
+    }
     public async Task<List<Slot>> GetSlotsByRoundWithDetailsAsync(int reviewRound)
     {
         return await _context.Slots

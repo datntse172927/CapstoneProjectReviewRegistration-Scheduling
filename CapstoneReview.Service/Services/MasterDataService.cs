@@ -39,7 +39,8 @@ public class MasterDataService : IMasterDataService
             TeamName = t.TeamName,
             LeaderId = t.LeaderId,
             LeaderRollNumber = t.Students?.FirstOrDefault(s => s.Id == t.LeaderId)?.RollNumber ?? "N/A",
-            TopicId = t.TopicId
+            TopicId = t.TopicId,
+            MemberCount = t.Students?.Count ?? 0
         }).ToList();
     }
 }

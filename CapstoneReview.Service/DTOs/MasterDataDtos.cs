@@ -16,4 +16,6 @@ public class MasterTeamDto
     public int LeaderId { get; set; }
     public string LeaderRollNumber { get; set; } = string.Empty;
     public int TopicId { get; set; }
+    public int MemberCount { get; set; }
+
 }

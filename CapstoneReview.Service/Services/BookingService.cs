@@ -24,6 +24,7 @@ public class BookingService : IBookingService
         return slots.Select(s => new AvailableSlotResponse
         {
             SlotId = s.Id,
+            ReviewRound = s.ReviewRound,
             Room = s.Room,
             StartTime = s.StartTime,
             EndTime = s.EndTime

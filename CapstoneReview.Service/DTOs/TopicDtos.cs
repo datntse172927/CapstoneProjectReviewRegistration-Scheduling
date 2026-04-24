@@ -7,6 +7,10 @@ public class TopicResponse
     public string Description { get; set; } = string.Empty;
     public int LecturerId { get; set; }
     public string LecturerName { get; set; } = string.Empty;
+
+    public int? TeamId { get; set; }
+    public string TeamName { get; set; } = string.Empty;
+
 }
 
 public class CreateTopicRequest
