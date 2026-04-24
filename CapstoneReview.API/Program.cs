@@ -137,5 +137,6 @@ using (var scope = app.Services.CreateScope())
         logger.LogError(ex, "Lỗi xảy ra khi khởi tạo database.");
     }
 }
-
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.Run();

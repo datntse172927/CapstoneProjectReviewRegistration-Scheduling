@@ -1,0 +1,1284 @@
+﻿
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CapstoneReview Dashboard</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --bg: #0f1117;
+            --bg2: #161b27;
+            --bg3: #1e2538;
+            --surface: #242c42;
+            --border: rgba(255,255,255,0.08);
+            --border2: rgba(255,255,255,0.14);
+            --text: #e8eaf6;
+            --muted: #8892b0;
+            --accent: #7c8cf8;
+            --accent2: #4fd1c7;
+            --success: #48e79b;
+            --warn: #f6ad55;
+            --danger: #fc8181;
+            --radius: 12px;
+            --radius-sm: 8px;
+            font-family: 'Be Vietnam Pro', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+            display: block;
+        }
+
+        .sidebar {
+            width: 220px;
+            min-height: 100vh;
+            background: var(--bg2);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            padding: 24px 0;
+            flex-shrink: 0;
+        }
+
+        .logo {
+            padding: 0 20px 24px;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .logo-text {
+            font-size: 15px;
+            font-weight: 700;
+            color: var(--accent);
+            letter-spacing: -0.3px;
+        }
+
+        .logo-sub {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 2px;
+        }
+
+        .nav {
+            padding: 16px 0;
+            flex: 1;
+        }
+
+        .nav-label {
+            font-size: 10px;
+            font-weight: 600;
+            letter-spacing: 1.2px;
+            color: var(--muted);
+            padding: 0 20px;
+            margin: 16px 0 8px;
+            text-transform: uppercase;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            padding: 10px 20px;
+            cursor: pointer;
+            transition: all 0.15s;
+            border-left: 2px solid transparent;
+            font-size: 13.5px;
+            color: var(--muted);
+            font-weight: 400;
+        }
+
+            .nav-item:hover {
+                color: var(--text);
+                background: rgba(124,140,248,0.07);
+            }
+
+            .nav-item.active {
+                color: var(--accent);
+                border-left-color: var(--accent);
+                background: rgba(124,140,248,0.1);
+                font-weight: 500;
+            }
+
+        .nav-icon {
+            font-size: 16px;
+            width: 20px;
+            text-align: center;
+        }
+
+        .main {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .topbar {
+            height: 60px;
+            background: var(--bg2);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 28px;
+            flex-shrink: 0;
+        }
+
+        .page-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--text);
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent), var(--accent2));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 700;
+            color: #fff;
+        }
+
+        .user-info .name {
+            font-size: 13px;
+            font-weight: 500;
+        }
+
+        .user-info .role {
+            font-size: 11px;
+            color: var(--muted);
+        }
+
+        .content {
+            flex: 1;
+            padding: 28px;
+            overflow-y: auto;
+        }
+
+        .page {
+            display: none;
+        }
+
+            .page.active {
+                display: block;
+            }
+
+        .section-title {
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .section-sub {
+            font-size: 13px;
+            color: var(--muted);
+            margin-bottom: 24px;
+        }
+
+        .card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 20px;
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text);
+        }
+
+        .grid2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+
+        .grid3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 16px;
+        }
+
+        .form-group {
+            margin-bottom: 14px;
+        }
+
+        label {
+            display: block;
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 6px;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+        }
+
+        input, select, textarea {
+            width: 100%;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: var(--radius-sm);
+            padding: 9px 12px;
+            color: var(--text);
+            font-size: 13px;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.15s;
+        }
+
+            input:focus, select:focus, textarea:focus {
+                border-color: var(--accent);
+            }
+
+            select option {
+                background: var(--bg3);
+            }
+
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .btn {
+            padding: 9px 18px;
+            border-radius: var(--radius-sm);
+            border: none;
+            cursor: pointer;
+            font-size: 13px;
+            font-family: inherit;
+            font-weight: 600;
+            transition: all 0.15s;
+            letter-spacing: 0.2px;
+        }
+
+        .btn-primary {
+            background: var(--accent);
+            color: #fff;
+        }
+
+            .btn-primary:hover {
+                background: #6b7af6;
+                transform: translateY(-1px);
+            }
+
+        .btn-success {
+            background: rgba(72,231,155,0.15);
+            color: var(--success);
+            border: 1px solid rgba(72,231,155,0.3);
+        }
+
+            .btn-success:hover {
+                background: rgba(72,231,155,0.25);
+            }
+
+        .btn-danger {
+            background: rgba(252,129,129,0.1);
+            color: var(--danger);
+            border: 1px solid rgba(252,129,129,0.25);
+        }
+
+            .btn-danger:hover {
+                background: rgba(252,129,129,0.2);
+            }
+
+        .btn-warn {
+            background: rgba(246,173,85,0.1);
+            color: var(--warn);
+            border: 1px solid rgba(246,173,85,0.25);
+        }
+
+            .btn-warn:hover {
+                background: rgba(246,173,85,0.2);
+            }
+
+        .btn-ghost {
+            background: transparent;
+            color: var(--muted);
+            border: 1px solid var(--border2);
+        }
+
+            .btn-ghost:hover {
+                color: var(--text);
+                border-color: var(--border);
+            }
+
+        .btn-sm {
+            padding: 6px 12px;
+            font-size: 12px;
+        }
+
+        .row {
+            display: flex;
+            gap: 12px;
+            align-items: flex-end;
+            flex-wrap: wrap;
+        }
+
+        .status-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .dot-success {
+            background: var(--success);
+        }
+
+        .dot-warn {
+            background: var(--warn);
+        }
+
+        .dot-danger {
+            background: var(--danger);
+        }
+
+        .table-wrap {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        thead th {
+            text-align: left;
+            padding: 8px 12px;
+            color: var(--muted);
+            font-size: 11px;
+            font-weight: 600;
+            letter-spacing: 0.8px;
+            text-transform: uppercase;
+            border-bottom: 1px solid var(--border);
+        }
+
+        tbody tr {
+            border-bottom: 1px solid var(--border);
+            transition: background 0.1s;
+        }
+
+            tbody tr:hover {
+                background: rgba(255,255,255,0.02);
+            }
+
+        tbody td {
+            padding: 11px 12px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 3px 9px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 600;
+        }
+
+        .badge-accent {
+            background: rgba(124,140,248,0.15);
+            color: var(--accent);
+        }
+
+        .badge-success {
+            background: rgba(72,231,155,0.12);
+            color: var(--success);
+        }
+
+        .badge-warn {
+            background: rgba(246,173,85,0.12);
+            color: var(--warn);
+        }
+
+        .badge-danger {
+            background: rgba(252,129,129,0.12);
+            color: var(--danger);
+        }
+
+        .badge-teal {
+            background: rgba(79,209,199,0.12);
+            color: var(--accent2);
+        }
+
+        .alert {
+            padding: 12px 16px;
+            border-radius: var(--radius-sm);
+            margin-bottom: 14px;
+            font-size: 13px;
+            display: none;
+        }
+
+            .alert.show {
+                display: block;
+            }
+
+        .alert-success {
+            background: rgba(72,231,155,0.1);
+            border: 1px solid rgba(72,231,155,0.3);
+            color: var(--success);
+        }
+
+        .alert-error {
+            background: rgba(252,129,129,0.1);
+            border: 1px solid rgba(252,129,129,0.3);
+            color: var(--danger);
+        }
+
+        .mono {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 14px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 18px 20px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .stat-val {
+            font-size: 26px;
+            font-weight: 700;
+            letter-spacing: -1px;
+        }
+
+        .stat-trend {
+            font-size: 11px;
+            color: var(--muted);
+            margin-top: 4px;
+        }
+
+        .divider {
+            height: 1px;
+            background: var(--border);
+            margin: 20px 0;
+        }
+
+        .tag-list {
+            display: flex;
+            gap: 6px;
+            flex-wrap: wrap;
+        }
+
+        .login-wrap {
+            min-height: 100vh;
+            width: 100vw;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--bg);
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+
+        .login-box {
+            width: 360px;
+            background: var(--bg2);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 36px;
+        }
+
+        .login-logo {
+            font-size: 22px;
+            font-weight: 800;
+            color: var(--accent);
+            margin-bottom: 6px;
+        }
+
+        .login-sub {
+            color: var(--muted);
+            font-size: 13px;
+            margin-bottom: 28px;
+        }
+
+        .tab-bar {
+            display: flex;
+            gap: 2px;
+            background: var(--bg3);
+            border-radius: var(--radius-sm);
+            padding: 4px;
+            margin-bottom: 20px;
+        }
+
+        .tab {
+            flex: 1;
+            padding: 7px 12px;
+            border-radius: 6px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 500;
+            color: var(--muted);
+            transition: all 0.15s;
+        }
+
+            .tab.active {
+                background: var(--surface);
+                color: var(--text);
+            }
+
+        .tab-content {
+            display: none;
+        }
+
+            .tab-content.active {
+                display: block;
+            }
+
+        .slot-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(240px,1fr));
+            gap: 14px;
+            margin-top: 20px;
+        }
+
+        .slot-card {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 16px;
+        }
+
+        .slot-time {
+            font-size: 15px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .slot-room {
+            font-size: 12px;
+            color: var(--muted);
+            margin-bottom: 12px;
+        }
+
+        .slot-actions {
+            display: flex;
+            gap: 6px;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 48px 20px;
+            color: var(--muted);
+        }
+
+        .empty-icon {
+            font-size: 40px;
+            margin-bottom: 12px;
+        }
+
+        .empty-msg {
+            font-size: 14px;
+        }
+
+        .tag-chip {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            background: var(--bg3);
+            border: 1px solid var(--border2);
+            border-radius: 6px;
+            padding: 4px 10px;
+            font-size: 12px;
+            cursor: pointer;
+            transition: all 0.12s;
+        }
+
+            .tag-chip:hover {
+                border-color: var(--accent);
+                color: var(--accent);
+            }
+
+        .code-block {
+            background: var(--bg3);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 14px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--accent2);
+            overflow-x: auto;
+            white-space: pre;
+        }
+
+        .api-response {
+            background: var(--bg);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11.5px;
+            color: #a8b2d8;
+            max-height: 200px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+        }
+
+        .spinner {
+            display: inline-block;
+            width: 14px;
+            height: 14px;
+            border: 2px solid rgba(255,255,255,0.2);
+            border-top-color: var(--accent);
+            border-radius: 50%;
+            animation: spin 0.7s linear infinite;
+            vertical-align: middle;
+            margin-right: 6px;
+        }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        .flex-between {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .flex-center {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .info-row {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+            margin-bottom: 16px;
+        }
+
+        .info-item {
+        }
+
+        .info-key {
+            font-size: 11px;
+            color: var(--muted);
+            margin-bottom: 2px;
+        }
+
+        .info-val {
+            font-size: 14px;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- LOGIN -->
+    <div id="loginView" class="login-wrap">
+        <div class="login-box">
+            <div class="login-logo">◈ CapstoneReview</div>
+            <div class="login-sub">Hệ thống quản lý review khóa luận</div>
+            <div class="alert" id="loginAlert"></div>
+            <div class="form-group">
+                <label>Email</label>
+                <input type="email" id="loginEmail" placeholder="lecturer@fpt.edu.vn" value="admin@fpt.edu.vn">
+            </div>
+            <div class="form-group">
+                <label>Mật khẩu</label>
+                <input type="password" id="loginPassword" placeholder="••••••••" value="password123">
+            </div>
+            <button class="btn btn-primary" style="width:100%;margin-top:8px" onclick="doLogin()">Đăng nhập</button>
+            <div style="margin-top:16px;text-align:center;font-size:12px;color:var(--muted)">
+                <span>Demo: admin@fpt.edu.vn / password123</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- DASHBOARD -->
+    <div id="dashView" style="display:none;width:100%">
+
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <div class="logo">
+                <div class="logo-text">◈ CapstoneReview</div>
+                <div class="logo-sub">Management System</div>
+            </div>
+            <nav class="nav">
+                <div class="nav-label">Tổng quan</div>
+                <div class="nav-item active" onclick="goto('overview', this)"><span class="nav-icon">▦</span>Dashboard</div>
+
+                <div class="nav-label">Lịch phản biện</div>
+                <div class="nav-item" onclick="goto('schedule', this)"><span class="nav-icon">◷</span>Quản lý lịch</div>
+                <div class="nav-item" onclick="goto('slots', this)"><span class="nav-icon">⊞</span>Slot & Phòng</div>
+
+                <div class="nav-label">Đặt lịch</div>
+                <div class="nav-item" onclick="goto('booking', this)"><span class="nav-icon">⊕</span>Booking</div>
+                <div class="nav-label">Dữ liệu</div>
+                <div class="nav-item" onclick="goto('topics', this)"><span class="nav-icon">◉</span>Đề tài</div>
+                <div class="nav-item" onclick="goto('lecturers', this)"><span class="nav-icon">◈</span>Giảng viên</div>
+                <div class="nav-item" onclick="goto('teams', this)"><span class="nav-icon">◫</span>Nhóm sinh viên</div>
+
+                <div class="nav-label">Admin</div>
+                <div class="nav-item" onclick="goto('moderator', this)"><span class="nav-icon">⚙</span>Moderator</div>
+            </nav>
+            <div style="padding:16px 20px;border-top:1px solid var(--border)">
+                <div style="font-size:12px;color:var(--muted);margin-bottom:8px" id="sideUserName">Admin</div>
+                <button class="btn btn-ghost btn-sm" style="width:100%" onclick="logout()">Đăng xuất</button>
+            </div>
+        </div>
+
+        <!-- MAIN -->
+        <div class="main">
+            <div class="topbar">
+                <div class="page-title" id="topbarTitle">Dashboard</div>
+                <div class="user-badge">
+                    <div class="avatar" id="topbarAvatar">AD</div>
+                    <div class="user-info">
+                        <div class="name" id="topbarName">Admin</div>
+                        <div class="role" id="topbarRole">...</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="content">
+
+                <!-- OVERVIEW -->
+                <div class="page active" id="page-overview">
+                    <div class="section-title">Tổng quan hệ thống</div>
+                    <div class="section-sub">Theo dõi tình trạng lịch review và đặt chỗ</div>
+                    <div class="stats-row">
+                        <div class="stat-card"><div class="stat-label">TỔNG SLOT</div><div class="stat-val" style="color:var(--accent)"" id="statSlot">></div><div class="stat-trend">Review Round 1 & 2</div></div>
+                        <div class="stat-card"><div class="stat-label">ĐỀ TÀI</div><div class="stat-val" style="color:var(--accent2)"id="statTopic"></div><div class="stat-trend">Đang hoạt động</div></div>
+                        <div class="stat-card"><div class="stat-label">GIẢNG VIÊN</div><div class="stat-val" style="color:var(--success)"id="statLecturer"></div><div class="stat-trend">Đã cấu hình lịch</div></div>
+                        <div class="stat-card"><div class="stat-label">NHÓM</div><div class="stat-val" style="color:var(--warn)"id="statTeam"></div><div class="stat-trend">Đã đăng ký đề tài</div></div>
+                    </div>
+                    <div class="grid2">
+                        <div class="card">
+                            <div class="card-title">Trạng thái API</div>
+                            <div style="display:flex;flex-direction:column;gap:10px">
+                                <div class="flex-between"><span style="font-size:13px">POST /api/auth/login</span><span class="badge badge-success">OK</span></div>
+                                <div class="flex-between"><span style="font-size:13px">GET /api/schedule/{round}</span><span class="badge badge-success">OK</span></div>
+                                <div class="flex-between"><span style="font-size:13px">POST /api/schedule/auto-schedule</span><span class="badge badge-accent">Ready</span></div>
+                                <div class="flex-between"><span style="font-size:13px">GET /api/slot/available</span><span class="badge badge-success">OK</span></div>
+                                <div class="flex-between"><span style="font-size:13px">GET /api/topic</span><span class="badge badge-success">OK</span></div>
+                                <div class="flex-between"><span style="font-size:13px">GET /api/lecturer</span><span class="badge badge-success">OK</span></div>
+                            </div>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Hoạt động gần đây</div>
+                            <div style="display:flex;flex-direction:column;gap:10px">
+                                <div><span class="badge badge-success">Booking</span> <span style="font-size:12px;color:var(--muted);margin-left:6px">Team A3 → Slot 12:00 — 3p ago</span></div>
+                                <div><span class="badge badge-accent">Schedule</span> <span style="font-size:12px;color:var(--muted);margin-left:6px">Auto-schedule Round 2 — 15p ago</span></div>
+                                <div><span class="badge badge-teal">Topic</span> <span style="font-size:12px;color:var(--muted);margin-left:6px">Đề tài mới được tạo — 30p ago</span></div>
+                                <div><span class="badge badge-warn">Slot</span> <span style="font-size:12px;color:var(--muted);margin-left:6px">Slot mới: P.B2.05 — 1h ago</span></div>
+                                <div><span class="badge badge-success">Validate</span> <span style="font-size:12px;color:var(--muted);margin-left:6px">GV hợp lệ (slotId=5) — 2h ago</span></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SCHEDULE -->
+                <div class="page" id="page-schedule">
+                    <div class="section-title">Quản lý lịch phản biện</div>
+                    <div class="section-sub">Xem, xếp lịch tự động, kiểm tra conflict giảng viên</div>
+                    <div class="card">
+                        <div class="card-title">Xem lịch theo round — GET /api/schedule/{reviewRound}</div>
+                        <div class="row">
+                            <div class="form-group" style="flex:1">
+                                <label>Review Round</label>
+                                <select id="scheduleRound">
+                                    <option value="1">Round 1</option>
+                                    <option value="2">Round 2</option>
+                                    <option value="3">Round 3</option>
+                                </select>
+                            </div>
+                            <button class="btn btn-primary" onclick="fetchSchedule()">Lấy lịch</button>
+                        </div>
+                        <div class="alert" id="scheduleAlert"></div>
+                        <div id="scheduleResult" style="margin-top:12px"></div>
+                    </div>
+                    <div class="grid2">
+                        <div class="card">
+                            <div class="card-title">Xếp lịch tự động — POST /api/schedule/auto-schedule</div>
+                            <div class="form-group">
+                                <label>Review Round</label>
+                                <select id="autoRound">
+                                    <option value="1">Round 1</option>
+                                    <option value="2">Round 2</option>
+                                    <option value="3">Round 3</option>
+                                </select>
+                            </div>
+                            <div class="alert" id="autoAlert"></div>
+                            <button class="btn btn-primary" onclick="autoSchedule()">⚡ Chạy Auto-Schedule</button>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Kiểm tra hợp lệ — POST /api/schedule/validate-assignment</div>
+                            <div class="form-group">
+                                <label>Slot ID</label>
+                                <input type="number" id="validateSlotId" placeholder="VD: 5" value="5">
+                            </div>
+                            <div class="form-group">
+                                <label>Lecturer ID</label>
+                                <input type="number" id="validateLecturerId" placeholder="VD: 3" value="3">
+                            </div>
+                            <div class="alert" id="validateAlert"></div>
+                            <button class="btn btn-success" onclick="validateAssignment()">✓ Kiểm tra</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SLOTS -->
+                <div class="page" id="page-slots">
+                    <div class="section-title">Slot & Phòng</div>
+                    <div class="section-sub">Tạo slot mới, xem slot trống, quản lý phòng học</div>
+                    <div class="grid2">
+                        <div class="card">
+                            <div class="card-title">Tạo slot — POST /api/slot</div>
+                            <div class="form-group">
+                                <label>Review Round</label>
+                                <select id="slotRound">
+                                    <option value="1">Round 1</option>
+                                    <option value="2">Round 2</option>
+                                </select>
+                            </div>
+                            <div class="grid2">
+                                <div class="form-group">
+                                    <label>Start Time</label>
+                                    <input type="datetime-local" id="slotStart" value="2025-06-10T08:00">
+                                </div>
+                                <div class="form-group">
+                                    <label>End Time</label>
+                                    <input type="datetime-local" id="slotEnd" value="2025-06-10T09:30">
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label>Phòng</label>
+                                <input id="slotRoom" placeholder="VD: P.B2.05" value="P.B2.05">
+                            </div>
+                            <div class="form-group">
+                                <label>Hạn đăng ký</label>
+                                <input type="datetime-local" id="slotDeadline" value="2025-06-08T23:59">
+                            </div>
+                            <div class="alert" id="slotAlert"></div>
+                            <button class="btn btn-primary" onclick="createSlot()">Tạo slot</button>
+                        </div>
+                        <div class="card">
+                            <div class="card-title">Slot trống — GET /api/slot/available</div>
+                            <button class="btn btn-ghost btn-sm" onclick="fetchSlots()">Tải danh sách</button>
+                            <div id="slotList" style="margin-top:16px">
+                                <div class="empty-state"><div class="empty-icon">◷</div><div class="empty-msg">Nhấn "Tải danh sách" để xem slot trống</div></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BOOKING -->
+                <div class="page" id="page-booking">
+                    <div class="section-title">Quản lý Booking</div>
+                    <div class="section-sub">Đặt lịch, hủy, cập nhật cho team và giảng viên</div>
+                    <div class="tab-bar">
+                        <div class="tab active" onclick="switchTab('booking', 'team', this)">Team</div>
+                        <div class="tab" onclick="switchTab('booking', 'lecturer', this)">Giảng viên</div>
+                    </div>
+                    <div class="tab-content active" id="booking-team">
+                        <div class="grid2">
+                            <div class="card">
+                                <div class="card-title">Đặt lịch team — POST /api/booking/team</div>
+                                <div class="form-group"><label>Team ID</label><input type="number" id="bkTeamId" placeholder="1" value="1"></div>
+                                <div class="form-group"><label>Slot ID</label><input type="number" id="bkTeamSlotId" placeholder="5" value="5"></div>
+                                <div class="alert" id="bkTeamAlert"></div>
+                                <div class="row">
+                                    <button class="btn btn-primary" onclick="bookTeam()">Đặt lịch</button>
+                                </div>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">Cập nhật / Hủy booking team</div>
+                                <div class="form-group"><label>Team ID</label><input type="number" id="bkTeamUpId" placeholder="1" value="1"></div>
+                                <div class="form-group"><label>Slot ID cũ</label><input type="number" id="bkTeamOldSlot" placeholder="5" value="5"></div>
+                                <div class="form-group"><label>Slot ID mới (cập nhật)</label><input type="number" id="bkTeamNewSlot" placeholder="7" value="7"></div>
+                                <div class="alert" id="bkTeamUpAlert"></div>
+                                <div class="row">
+                                    <button class="btn btn-warn" onclick="updateTeamBooking()">Cập nhật</button>
+                                    <button class="btn btn-danger" onclick="cancelTeamBooking()">Hủy booking</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="booking-lecturer">
+                        <div class="grid2">
+                            <div class="card">
+                                <div class="card-title">Đặt lịch GV — POST /api/booking/lecturer</div>
+                                <div class="form-group"><label>Lecturer ID</label><input type="number" id="bkLecId" placeholder="3" value="3"></div>
+                                <div class="form-group"><label>Slot ID</label><input type="number" id="bkLecSlotId" placeholder="5" value="5"></div>
+                                <div class="alert" id="bkLecAlert"></div>
+                                <button class="btn btn-primary" onclick="bookLecturer()">Đặt lịch</button>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">Cập nhật / Hủy booking GV</div>
+                                <div class="form-group"><label>Lecturer ID</label><input type="number" id="bkLecUpId" placeholder="3" value="3"></div>
+                                <div class="form-group"><label>Slot ID cũ</label><input type="number" id="bkLecOldSlot" placeholder="5" value="5"></div>
+                                <div class="form-group"><label>Slot ID mới</label><input type="number" id="bkLecNewSlot" placeholder="7" value="7"></div>
+                                <div class="alert" id="bkLecUpAlert"></div>
+                                <div class="row">
+                                    <button class="btn btn-warn" onclick="updateLecturerBooking()">Cập nhật</button>
+                                    <button class="btn btn-danger" onclick="cancelLecturerBooking()">Hủy booking</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TOPICS -->
+                <div class="page" id="page-topics">
+                    <div class="section-title">Quản lý Đề tài</div>
+                    <div class="section-sub">CRUD đề tài khóa luận — GET / POST / PUT / DELETE /api/topic</div>
+                    <div class="tab-bar">
+                        <div class="tab active" onclick="switchTab('topic', 'list', this)">Danh sách</div>
+                        <div class="tab" onclick="switchTab('topic', 'create', this)">Tạo mới</div>
+                        <div class="tab" onclick="switchTab('topic', 'edit', this)">Cập nhật / Xóa</div>
+                    </div>
+                    <div class="tab-content active" id="topic-list">
+                        <button class="btn btn-primary btn-sm" onclick="fetchTopics()">Tải danh sách</button>
+                        <div id="topicListResult" style="margin-top:14px">
+                            <div class="empty-state"><div class="empty-icon">◉</div><div class="empty-msg">Nhấn "Tải danh sách" để xem đề tài</div></div>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="topic-create">
+                        <div class="card">
+                            <div class="card-title">Tạo đề tài mới</div>
+                            <div class="grid2">
+                                <div class="form-group"><label>Tiêu đề</label><input id="topicTitle" placeholder="Tên đề tài"></div>
+                                <div class="form-group"><label>Team ID</label><input type="number" id="topicTeamId" placeholder="1"></div>
+                            </div>
+                            <div class="form-group"><label>Mô tả</label><textarea id="topicDesc" placeholder="Mô tả đề tài..."></textarea></div>
+                            <div class="form-group"><label>Lecturer ID (GVHD)</label><input type="number" id="topicLecId" placeholder="2"></div>
+                            <div class="alert" id="topicCreateAlert"></div>
+                            <button class="btn btn-primary" onclick="createTopic()">Tạo đề tài</button>
+                        </div>
+                    </div>
+                    <div class="tab-content" id="topic-edit">
+                        <div class="grid2">
+                            <div class="card">
+                                <div class="card-title">Lấy theo ID — GET /api/topic/{id}</div>
+                                <div class="row">
+                                    <div class="form-group" style="flex:1"><label>Topic ID</label><input type="number" id="topicGetId" value="1"></div>
+                                    <button class="btn btn-ghost" onclick="getTopicById()">Xem</button>
+                                </div>
+                                <div class="alert" id="topicGetAlert"></div>
+                                <div id="topicGetResult"></div>
+                            </div>
+                            <div class="card">
+                                <div class="card-title">Cập nhật / Xóa</div>
+                                <div class="form-group"><label>Topic ID</label><input type="number" id="topicEditId" value="1"></div>
+                                <div class="form-group"><label>Tiêu đề mới</label><input id="topicEditTitle" placeholder="Tiêu đề mới"></div>
+                                <div class="form-group"><label>Mô tả mới</label><textarea id="topicEditDesc" placeholder="Mô tả..." style="min-height:60px"></textarea></div>
+                                <div class="alert" id="topicEditAlert"></div>
+                                <div class="row">
+                                    <button class="btn btn-warn" onclick="updateTopic()">Cập nhật</button>
+                                    <button class="btn btn-danger" onclick="deleteTopic()">Xóa</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- LECTURERS -->
+                <div class="page" id="page-lecturers">
+                    <div class="section-title">Danh sách Giảng viên</div>
+                    <div class="section-sub">GET /api/lecturer — Toàn bộ giảng viên trong hệ thống</div>
+                    <div class="card">
+                        <button class="btn btn-primary btn-sm" onclick="fetchLecturers()">Tải danh sách GV</button>
+                        <div id="lecturerResult" style="margin-top:16px">
+                            <div class="empty-state"><div class="empty-icon">◈</div><div class="empty-msg">Nhấn để tải danh sách giảng viên</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- TEAMS -->
+                <div class="page" id="page-teams">
+                    <div class="section-title">Danh sách Nhóm</div>
+                    <div class="section-sub">GET /api/team — Toàn bộ nhóm sinh viên</div>
+                    <div class="card">
+                        <button class="btn btn-primary btn-sm" onclick="fetchTeams()">Tải danh sách nhóm</button>
+                        <div id="teamResult" style="margin-top:16px">
+                            <div class="empty-state"><div class="empty-icon">◫</div><div class="empty-msg">Nhấn để tải danh sách nhóm</div></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- MODERATOR -->
+                <div class="page" id="page-moderator">
+                    <div class="section-title">Cấu hình Moderator</div>
+                    <div class="section-sub">PUT /api/moderator/lecturer-config/{lecturerId}</div>
+                    <div class="card" style="max-width:520px">
+                        <div class="card-title">Cấu hình giảng viên</div>
+                        <div class="form-group"><label>Lecturer ID</label><input type="number" id="modLecId" placeholder="3" value="3"></div>
+                        <div class="form-group"><label>Số lượng review tối đa / tuần</label><input type="number" id="modMaxReviews" placeholder="5" value="5"></div>
+                        <div class="form-group"><label>Ngày không available</label><input id="modUnavailable" placeholder="VD: Monday, Friday"></div>
+                        <div class="form-group"><label>Ghi chú</label><textarea id="modNote" placeholder="Ghi chú cấu hình..."></textarea></div>
+                        <div class="alert" id="modAlert"></div>
+                        <button class="btn btn-primary" onclick="configLecturer()">Lưu cấu hình</button>
+                    </div>
+                </div>
+
+            </div><!-- /content -->
+        </div><!-- /main -->
+    </div><!-- /dashView -->
+
+    <script>const BASE = 'https://localhost:7233/api';
+let token = null;
+
+function showAlert(id, msg, type='success') {
+  const el = document.getElementById(id);
+  el.className = `alert show alert-${type}`;
+  el.textContent = msg;
+  setTimeout(() => el.classList.remove('show'), 4000);
+}
+
+function loading(id, text='Đang xử lý...') {
+  const el = document.getElementById(id);
+  if (el) el.innerHTML = `<span class="spinner"></span>${text}`;
+}
+        async function loadStats() {
+            const [slots, topics, lecturers, teams] = await Promise.all([
+                apiFetch('GET', '/slot/available', null, null),
+                apiFetch('GET', '/topic', null, null),
+                apiFetch('GET', '/lecturer', null, null),
+                apiFetch('GET', '/team', null, null),
+            ]);
+
+            document.getElementById('statSlot').textContent = Array.isArray(slots) ? slots.length : '—';
+            document.getElementById('statTopic').textContent = Array.isArray(topics) ? topics.length : '—';
+            document.getElementById('statLecturer').textContent = Array.isArray(lecturers) ? lecturers.length : '—';
+            document.getElementById('statTeam').textContent = Array.isArray(teams) ? teams.length : '—';
+        }
+async function apiFetch(method, path, body, alertId) {
+  try {
+    const headers = { 'Content-Type': 'application/json' };
+    if (token) headers['Authorization'] = `Bearer ${token}`;
+    const res = await fetch(BASE + path, { method, headers, body: body ? JSON.stringify(body) : undefined });
+    const data = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(data.error || data.message || `HTTP ${res.status}`);
+    return data;
+  } catch (e) {
+    if (alertId) showAlert(alertId, e.message, 'error');
+    return null;
+  }
+}
+
+        async function doLogin() {
+            const email = document.getElementById('loginEmail').value;
+            const pw = document.getElementById('loginPassword').value;
+            if (!email || !pw) return showAlert('loginAlert', 'Vui lòng nhập đầy đủ thông tin.', 'error');
+
+            const data = await apiFetch('POST', '/auth/login', { email, password: pw }, 'loginAlert');
+            if (!data) return;
+
+            token = data.token;
+            const name = data.fullName;
+            const role = data.role;
+
+            document.getElementById('sideUserName').textContent = name;
+            document.getElementById('topbarName').textContent = name;
+            document.getElementById('topbarAvatar').textContent = name.substring(0, 2).toUpperCase();
+            document.getElementById('topbarRole').textContent = role;
+            document.getElementById('loginView').style.display = 'none';
+            document.getElementById('dashView').style.display = 'flex';
+            loadStats();
+        }
+
+function logout() {
+  token = null;
+  document.getElementById('loginView').style.display = 'flex';
+  document.getElementById('dashView').style.display = 'none';
+}
+
+function goto(page, el) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  document.getElementById('page-' + page).classList.add('active');
+  el.classList.add('active');
+  const titles = {overview:'Dashboard',schedule:'Quản lý lịch',slots:'Slot & Phòng',booking:'Booking',topics:'Đề tài',lecturers:'Giảng viên',teams:'Nhóm',moderator:'Moderator'};
+  document.getElementById('topbarTitle').textContent = titles[page] || page;
+}
+
+function switchTab(group, tab, el) {
+  document.querySelectorAll(`#page-${group === 'topic' ? 'topics' : group === 'booking' ? 'booking' : group} .tab-content`).forEach(t => t.classList.remove('active'));
+  document.querySelectorAll(`#page-${group === 'topic' ? 'topics' : group === 'booking' ? 'booking' : group} .tab`).forEach(t => t.classList.remove('active'));
+  document.getElementById(`${group}-${tab}`).classList.add('active');
+  el.classList.add('active');
+}
+
+// SCHEDULE
+async function fetchSchedule() {
+  const round = document.getElementById('scheduleRound').value;
+  document.getElementById('scheduleResult').innerHTML = '<span class="spinner"></span> Đang tải...';
+  const data = await apiFetch('GET', `/schedule/${round}`, null, 'scheduleAlert');
+  if (!data) { document.getElementById('scheduleResult').innerHTML = ''; return; }
+  const rows = (Array.isArray(data) ? data : [data]).map(s => `
+    <tr>
+      <td>${s.slotId ?? '—'}</td>
+      <td>${s.startTime ? s.startTime.substring(0,16).replace('T',' ') : '—'}</td>
+      <td>${s.endTime ? s.endTime.substring(0,16).replace('T',' ') : '—'}</td>
+      <td>${s.room ?? '—'}</td>
+      <td>${(s.reviewers||[]).map(r=>`<span class="badge badge-accent">${r.fullName}</span>`).join(' ')}</td>
+      <td>${(s.topics||[]).map(t=>`<span class="badge badge-teal">${t.title}</span>`).join(' ')}</td>
+    </tr>`).join('');
+  document.getElementById('scheduleResult').innerHTML = `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Bắt đầu</th><th>Kết thúc</th><th>Phòng</th><th>Reviewer</th><th>Đề tài</th></tr></thead><tbody>${rows || '<tr><td colspan="6" style="text-align:center;color:var(--muted)">Không có dữ liệu</td></tr>'}</tbody></table></div>`;
+}
+
+async function autoSchedule() {
+  const round = parseInt(document.getElementById('autoRound').value);
+  const data = await apiFetch('POST', '/schedule/auto-schedule', { reviewRound: round }, 'autoAlert');
+  if (data) showAlert('autoAlert', data.message || 'Xếp lịch thành công!', 'success');
+}
+
+async function validateAssignment() {
+  const slotId = document.getElementById('validateSlotId').value;
+  const lecturerId = document.getElementById('validateLecturerId').value;
+  const data = await apiFetch('POST', `/schedule/validate-assignment?slotId=${slotId}&lecturerId=${lecturerId}`, null, 'validateAlert');
+  if (data) showAlert('validateAlert', data.message || 'Hợp lệ!', 'success');
+}
+
+// SLOTS
+async function createSlot() {
+  const body = {
+    reviewRound: parseInt(document.getElementById('slotRound').value),
+    startTime: document.getElementById('slotStart').value,
+    endTime: document.getElementById('slotEnd').value,
+    room: document.getElementById('slotRoom').value,
+    registrationDeadline: document.getElementById('slotDeadline').value
+  };
+  const data = await apiFetch('POST', '/slot', body, 'slotAlert');
+  if (data) showAlert('slotAlert', data.message || 'Tạo slot thành công!', 'success');
+}
+
+async function fetchSlots() {
+  document.getElementById('slotList').innerHTML = '<span class="spinner"></span> Đang tải...';
+  const data = await apiFetch('GET', '/slot/available', null, null);
+  if (!data || !Array.isArray(data) || data.length === 0) {
+    document.getElementById('slotList').innerHTML = `<div class="empty-state"><div class="empty-icon">◷</div><div class="empty-msg">Không có slot trống</div></div>`;
+    return;
+  }
+  const cards = data.map(s => `<div class="slot-card"><div class="slot-time">${s.startTime?.substring(11,16)||'--:--'} – ${s.endTime?.substring(11,16)||'--:--'}</div><div class="slot-room">Phòng: ${s.room||'—'} · Round ${s.reviewRound||'—'}</div><div class="slot-actions"><span class="badge badge-success">Trống</span></div></div>`).join('');
+  document.getElementById('slotList').innerHTML = `<div class="slot-grid">${cards}</div>`;
+}
+
+// BOOKING
+async function bookTeam() {
+  const data = await apiFetch('POST', '/booking/team', { teamId: parseInt(document.getElementById('bkTeamId').value), slotId: parseInt(document.getElementById('bkTeamSlotId').value) }, 'bkTeamAlert');
+  if (data) showAlert('bkTeamAlert', data.message || 'Đặt lịch thành công!', 'success');
+}
+async function cancelTeamBooking() {
+  const data = await apiFetch('DELETE', '/booking/team', { teamId: parseInt(document.getElementById('bkTeamUpId').value), slotId: parseInt(document.getElementById('bkTeamOldSlot').value) }, 'bkTeamUpAlert');
+  if (data) showAlert('bkTeamUpAlert', data.message || 'Hủy thành công!', 'success');
+}
+async function updateTeamBooking() {
+  const data = await apiFetch('PUT', '/booking/team', { teamId: parseInt(document.getElementById('bkTeamUpId').value), oldSlotId: parseInt(document.getElementById('bkTeamOldSlot').value), newSlotId: parseInt(document.getElementById('bkTeamNewSlot').value) }, 'bkTeamUpAlert');
+  if (data) showAlert('bkTeamUpAlert', data.message || 'Cập nhật thành công!', 'success');
+}
+async function bookLecturer() {
+  const data = await apiFetch('POST', '/booking/lecturer', { lecturerId: parseInt(document.getElementById('bkLecId').value), slotId: parseInt(document.getElementById('bkLecSlotId').value) }, 'bkLecAlert');
+  if (data) showAlert('bkLecAlert', data.message || 'Đặt lịch GV thành công!', 'success');
+}
+async function cancelLecturerBooking() {
+  const data = await apiFetch('DELETE', '/booking/lecturer', { lecturerId: parseInt(document.getElementById('bkLecUpId').value), slotId: parseInt(document.getElementById('bkLecOldSlot').value) }, 'bkLecUpAlert');
+  if (data) showAlert('bkLecUpAlert', data.message || 'Hủy thành công!', 'success');
+}
+async function updateLecturerBooking() {
+  const data = await apiFetch('PUT', '/booking/lecturer', { lecturerId: parseInt(document.getElementById('bkLecUpId').value), oldSlotId: parseInt(document.getElementById('bkLecOldSlot').value), newSlotId: parseInt(document.getElementById('bkLecNewSlot').value) }, 'bkLecUpAlert');
+  if (data) showAlert('bkLecUpAlert', data.message || 'Cập nhật thành công!', 'success');
+}
+
+// TOPICS
+async function fetchTopics() {
+  document.getElementById('topicListResult').innerHTML = '<span class="spinner"></span> Đang tải...';
+  const data = await apiFetch('GET', '/topic', null, null);
+  if (!data || !Array.isArray(data) || data.length === 0) { document.getElementById('topicListResult').innerHTML = '<div class="empty-state"><div class="empty-icon">◉</div><div class="empty-msg">Không có đề tài</div></div>'; return; }
+  const rows = data.map(t => `<tr><td>${t.id??'—'}</td><td>${t.title??'—'}</td><td>${t.teamId??'—'}</td><td>${t.lecturerId??'—'}</td><td><span class="badge badge-teal">Active</span></td></tr>`).join('');
+  document.getElementById('topicListResult').innerHTML = `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Tiêu đề</th><th>Team</th><th>GVHD</th><th>Trạng thái</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+async function createTopic() {
+  const body = { title: document.getElementById('topicTitle').value, teamId: parseInt(document.getElementById('topicTeamId').value), description: document.getElementById('topicDesc').value, lecturerId: parseInt(document.getElementById('topicLecId').value) };
+  const data = await apiFetch('POST', '/topic', body, 'topicCreateAlert');
+  if (data) showAlert('topicCreateAlert', 'Đề tài đã được tạo!', 'success');
+}
+async function getTopicById() {
+  const id = document.getElementById('topicGetId').value;
+  const data = await apiFetch('GET', `/topic/${id}`, null, 'topicGetAlert');
+  if (data) document.getElementById('topicGetResult').innerHTML = `<div style="margin-top:12px;padding:12px;background:var(--bg3);border-radius:var(--radius-sm);font-size:13px"><b>${data.title||'—'}</b><br><span style="color:var(--muted)">Team: ${data.teamId||'—'} · GV: ${data.lecturerId||'—'}</span></div>`;
+}
+async function updateTopic() {
+  const id = document.getElementById('topicEditId').value;
+  const body = { title: document.getElementById('topicEditTitle').value, description: document.getElementById('topicEditDesc').value };
+  const data = await apiFetch('PUT', `/topic/${id}`, body, 'topicEditAlert');
+  if (data) showAlert('topicEditAlert', 'Cập nhật thành công!', 'success');
+}
+async function deleteTopic() {
+  const id = document.getElementById('topicEditId').value;
+  const data = await apiFetch('DELETE', `/topic/${id}`, null, 'topicEditAlert');
+  if (data) showAlert('topicEditAlert', data.message || 'Đã xóa đề tài!', 'success');
+}
+
+
+// LECTURERS
+async function fetchLecturers() {
+  document.getElementById('lecturerResult').innerHTML = '<span class="spinner"></span> Đang tải...';
+  const data = await apiFetch('GET', '/lecturer', null, null);
+  if (!data || !Array.isArray(data) || data.length === 0) { document.getElementById('lecturerResult').innerHTML = '<div class="empty-state"><div class="empty-icon">◈</div><div class="empty-msg">Không có dữ liệu</div></div>'; return; }
+  const rows = data.map(l => `<tr><td>${l.id??'—'}</td><td>${l.fullName??'—'}</td><td>${l.email??'—'}</td><td><span class="badge badge-success">Active</span></td></tr>`).join('');
+  document.getElementById('lecturerResult').innerHTML = `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Họ tên</th><th>Email</th><th>Trạng thái</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+// TEAMS
+async function fetchTeams() {
+  document.getElementById('teamResult').innerHTML = '<span class="spinner"></span> Đang tải...';
+  const data = await apiFetch('GET', '/team', null, null);
+  if (!data || !Array.isArray(data) || data.length === 0) { document.getElementById('teamResult').innerHTML = '<div class="empty-state"><div class="empty-icon">◫</div><div class="empty-msg">Không có dữ liệu</div></div>'; return; }
+  const rows = data.map(t => `<tr><td>${t.id??'—'}</td><td>${t.teamName??'—'}</td><td>${t.memberCount??'—'}</td><td><span class="badge badge-accent">Đang học</span></td></tr>`).join('');
+  document.getElementById('teamResult').innerHTML = `<div class="table-wrap"><table><thead><tr><th>ID</th><th>Tên nhóm</th><th>Số thành viên</th><th>Trạng thái</th></tr></thead><tbody>${rows}</tbody></table></div>`;
+}
+
+// MODERATOR
+async function configLecturer() {
+  const id = document.getElementById('modLecId').value;
+  const body = { maxReviewsPerWeek: parseInt(document.getElementById('modMaxReviews').value), unavailableDays: document.getElementById('modUnavailable').value, note: document.getElementById('modNote').value };
+  const data = await apiFetch('PUT', `/moderator/lecturer-config/${id}`, body, 'modAlert');
+  if (data) showAlert('modAlert', data.message || 'Đã lưu cấu hình!', 'success');
+}</script>
+</body>
+</html>
